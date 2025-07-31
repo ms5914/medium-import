@@ -8,11 +8,9 @@
 </head>
 <body>
     <h1>Docker Demystified: A Complete Beginner's Guide to Containerization</h1>
-
     <h2>What is Docker?</h2>
     <p>Docker is a containerization platform that allows developers to package applications and their dependencies into lightweight, portable containers. Think of a container as a standardized box that contains everything your application needs to run: the code, runtime, system tools, libraries, and settings.</p>
     <p>The main problem Docker solves is the "it works on my machine" issue. Before Docker, applications might work perfectly on a developer's laptop but fail when deployed to a different server due to differences in the operating system, installed libraries, or configuration settings.</p>
-
     <h2>Why Use Docker?</h2>
     <p>Docker offers several key benefits:</p>
     <ul>
@@ -23,10 +21,8 @@
         <li>Isolation: Applications run in isolated environments</li>
         <li>Fast deployment: Containers start in seconds</li>
     </ul>
-
     <h2>Docker vs Virtual Machines</h2>
     <p>While both Docker and virtual machines provide isolation, they work differently:</p>
-
     <h3>Virtual Machines:</h3>
     <ul>
         <li>Include a full operating system</li>
@@ -34,7 +30,6 @@
         <li>Take longer to start (minutes)</li>
         <li>Provide complete isolation</li>
     </ul>
-
     <h3>Docker Containers:</h3>
     <ul>
         <li>Share the host operating system kernel</li>
@@ -42,107 +37,73 @@
         <li>Start almost instantly (seconds)</li>
         <li>Provide process-level isolation</li>
     </ul>
-
     <h2>Key Docker Concepts</h2>
-
     <h3>1. Images</h3>
     <p>A Docker image is a read-only template used to create containers. It includes the application code, runtime, libraries, and dependencies. Images are built from instructions in a Dockerfile.</p>
-
     <h3>2. Containers</h3>
     <p>A container is a running instance of an image. You can create multiple containers from the same image, and each container runs independently.</p>
-
     <h3>3. Dockerfile</h3>
     <p>A Dockerfile is a text file containing instructions for building a Docker image. It specifies the base image, dependencies, configuration, and commands needed to set up the application.</p>
-
     <h3>4. Docker Hub</h3>
     <p>Docker Hub is a cloud-based registry where you can find and share Docker images. It contains thousands of pre-built images for popular applications and services.</p>
-
     <h2>Basic Docker Commands</h2>
-
     <h3>Working with Images:</h3>
     <pre># Pull an image from Docker Hub
 docker pull nginx
-
 # List all images
 docker images
-
 # Remove an image
 docker rmi nginx</pre>
-
     <h3>Working with Containers:</h3>
     <pre># Run a container
 docker run nginx
-
 # Run a container in the background
 docker run -d nginx
-
 # Run a container with port mapping
 docker run -d -p 8080:80 nginx
-
 # List running containers
 docker ps
-
 # List all containers (including stopped)
 docker ps -a
-
 # Stop a container
 docker stop container_name
-
 # Remove a container
 docker rm container_name</pre>
-
     <h2>Your First Docker Container</h2>
-
     <h3>Step 1: Install Docker</h3>
     <p>Download and install Docker Desktop from the official Docker website. This includes the Docker Engine, CLI tools, and a graphical interface.</p>
-
     <h3>Step 2: Verify Installation</h3>
     <pre># Check Docker version
 docker --version
-
 # Run a test container
 docker run hello-world</pre>
-
     <h3>Step 3: Run a Web Server</h3>
     <pre># Run an Nginx web server
 docker run -d -p 8080:80 nginx
-
 # Open your browser and go to http://localhost:8080</pre>
-
     <h2>Creating Your Own Docker Image</h2>
-
     <h3>Sample Dockerfile for a Node.js Application:</h3>
     <pre># Use official Node.js image as base
 FROM node:16
-
 # Set working directory
 WORKDIR /app
-
 # Copy package files
 COPY package*.json ./
-
 # Install dependencies
 RUN npm install
-
 # Copy application code
 COPY . .
-
 # Expose port
 EXPOSE 3000
-
 # Start the application
 CMD ["npm", "start"]</pre>
-
     <h3>Building and Running Your Image:</h3>
     <pre># Build the image
 docker build -t my-app .
-
 # Run the container
 docker run -d -p 3000:3000 my-app</pre>
-
     <h2>Docker Compose</h2>
     <p>Docker Compose is a tool for defining and running multi-container applications. You use a YAML file to configure your application's services.</p>
-
     <h3>Sample docker-compose.yml:</h3>
     <pre>version: '3'
 services:
@@ -154,19 +115,14 @@ services:
     image: postgres:13
     environment:
       POSTGRES_PASSWORD: password</pre>
-
     <h3>Docker Compose Commands:</h3>
     <pre># Start services
 docker-compose up
-
 # Start services in background
 docker-compose up -d
-
 # Stop services
 docker-compose down</pre>
-
     <h2>Best Practices</h2>
-
     <h3>Dockerfile Best Practices:</h3>
     <ul>
         <li>Use official base images when possible</li>
@@ -176,7 +132,6 @@ docker-compose down</pre>
         <li>Use .dockerignore to exclude unnecessary files</li>
         <li>Run containers as non-root users</li>
     </ul>
-
     <h3>Container Best Practices:</h3>
     <ul>
         <li>Keep containers stateless</li>
@@ -185,21 +140,15 @@ docker-compose down</pre>
         <li>Use health checks to monitor container status</li>
         <li>Limit container resources (CPU, memory)</li>
     </ul>
-
     <h2>Common Use Cases</h2>
-
     <h3>Development Environment</h3>
     <p>Docker ensures all team members work with identical development environments, reducing setup time and eliminating environment-related bugs.</p>
-
     <h3>Microservices</h3>
     <p>Each microservice can run in its own container, making it easier to develop, deploy, and scale individual components.</p>
-
     <h3>CI/CD Pipelines</h3>
     <p>Containers provide consistent build and deployment environments, making automated testing and deployment more reliable.</p>
-
     <h3>Application Deployment</h3>
     <p>Deploy applications quickly and consistently across different environments (development, staging, production).</p>
-
     <h2>Next Steps</h2>
     <p>Now that you understand Docker basics, here are recommended next steps:</p>
     <ol>
@@ -210,7 +159,6 @@ docker-compose down</pre>
         <li>Learn about container security best practices</li>
         <li>Experiment with Docker in CI/CD pipelines</li>
     </ol>
-
     <h2>Conclusion</h2>
     <p>Docker has revolutionized application deployment by making it easier to package, distribute, and run applications consistently across different environments. By understanding these fundamental concepts and practicing with real projects, you'll be well on your way to mastering containerization.</p>
     <p>Start with simple examples, gradually work your way up to more complex scenarios, and don't hesitate to explore the vast ecosystem of Docker tools and services available to developers today.</p>
