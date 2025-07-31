@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta property="article:published_time" content="2021-01-05T12:00:00.000Z" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your First Docker Container: Building and Running a Simple Web App</title>
+</head>
+<body>
+<h1>Your First Docker Container: Building and Running a Simple Web App</h1>
+<h2>Introduction</h2>
+<p>Building your first Docker container might seem intimidating, but it's actually quite straightforward. In this tutorial, we'll walk through creating a simple web application and packaging it into a Docker container. By the end, you'll have a working web app running inside a container that you can share with anyone.</p>
+<p>We'll build a basic HTML web page, create a Dockerfile, build an image, and run our container. Let's get started!</p>
+<h2>Prerequisites</h2>
+<p>Before we begin, make sure you have:</p>
+<ul>
+<li>Docker Desktop installed on your computer</li>
+<li>Basic knowledge of HTML (we'll keep it simple)</li>
+<li>A text editor (VS Code, Notepad++, or any editor you prefer)</li>
+<li>Command line access (Terminal on Mac/Linux, Command Prompt on Windows)</li>
+</ul>
+<h2>Step 1: Create Your Web Application</h2>
+<p>First, let's create a simple web application. We'll build a basic HTML page with some styling.</p>
+<h3>Create the Project Directory</h3>
+<p>Open your terminal and create a new directory for your project:</p>
+<pre>mkdir my-first-docker-app
+cd my-first-docker-app</pre>
+<h3>Create the HTML File</h3>
+<p>Create a file called `index.html` in your project directory:</p>
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;My First Docker App&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f8ff;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .info {
+            background: #e8f4fd;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin: 20px 0;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="container"&gt;
+        &lt;h1&gt;🐳 Welcome to My First Docker App!&lt;/h1&gt;
+        &lt;p&gt;Congratulations! You've successfully created and deployed your first Docker container.&lt;/p&gt;
+        
+        &lt;div class="info"&gt;
+            &lt;h3&gt;What you've accomplished:&lt;/h3&gt;
+            &lt;ul&gt;
+                &lt;li&gt;Created a simple web application&lt;/li&gt;
+                &lt;li&gt;Built a Docker image&lt;/li&gt;
+                &lt;li&gt;Ran your application in a container&lt;/li&gt;
+                &lt;li&gt;Learned the basics of containerization&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+        
+        &lt;p&gt;This web app is running inside a Docker container, which means it's completely isolated and portable. You can share this container with anyone, and it will run exactly the same way on their machine!&lt;/p&gt;
+        
+        &lt;p&gt;&lt;strong&gt;Next steps:&lt;/strong&gt; Try modifying the HTML, rebuilding the image, and running it again to see your changes.&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+<h2>Step 2: Create a Dockerfile</h2>
+<p>Now we need to create a Dockerfile that tells Docker how to build our container. Create a file called `Dockerfile` (no extension) in your project directory:</p>
+<pre># Use the official Nginx image as our base
+FROM nginx:alpine
+# Copy our HTML file to the Nginx web directory
+COPY index.html /usr/share/nginx/html/
+# Expose port 80 for web traffic
+EXPOSE 80
+# Start Nginx when the container runs
+CMD ["nginx", "-g", "daemon off;"]</pre>
+<h3>Understanding the Dockerfile</h3>
+<p>Let's break down what each line does:</p>
+<ul>
+<li>`FROM nginx:alpine`: We're using the official Nginx web server image based on Alpine Linux (lightweight)</li>
+<li>`COPY index.html /usr/share/nginx/html/`: This copies our HTML file into the container's web directory</li>
+<li>`EXPOSE 80`: This tells Docker that our container will listen on port 80</li>
+<li>`CMD ["nginx", "-g", "daemon off;"]`: This starts the Nginx web server when the container runs</li>
+</ul>
+<h2>Step 3: Build Your Docker Image</h2>
+<p>Now let's build our Docker image. In your terminal, make sure you're in your project directory and run:</p>
+<pre>docker build -t my-first-app .</pre>
+<h3>What's Happening?</h3>
+<p>Docker is:</p>
+<ol>
+<li>Reading your Dockerfile</li>
+<li>Downloading the Nginx base image (if not already present)</li>
+<li>Copying your HTML file into the image</li>
+<li>Creating a new image tagged as "my-first-app"</li>
+</ol>
+<p>You should see output similar to this:</p>
+<pre>Sending build context to Docker daemon  3.072kB
+Step 1/4 : FROM nginx:alpine
+ ---> 2d7aa4c5bcc3
+Step 2/4 : COPY index.html /usr/share/nginx/html/
+ ---> 8b8c8c8c8c8c
+Step 3/4 : EXPOSE 80
+ ---> Running in 1a2b3c4d5e6f
+ ---> 9d9d9d9d9d9d
+Step 4/4 : CMD ["nginx", "-g", "daemon off;"]
+ ---> Running in 7f8e9d0c1b2a
+ ---> Successfully built abc123def456
+Successfully tagged my-first-app:latest</pre>
+<h2>Step 4: Run Your Container</h2>
+<p>Now let's run our container:</p>
+<pre>docker run -d -p 8080:80 --name my-running-app my-first-app</pre>
+<h3>Command Breakdown</h3>
+<ul>
+<li>`docker run`: Command to create and start a container</li>
+<li>`-d`: Run in detached mode (in the background)</li>
+<li>`-p 8080:80`: Map port 8080 on your computer to port 80 in the container</li>
+<li>`--name my-running-app`: Give the container a friendly name</li>
+<li>`my-first-app`: The name of the image we built</li>
+</ul>
+<h2>Step 5: View Your Web App</h2>
+<p>Open your web browser and go to:</p>
+<pre>http://localhost:8080</pre>
+<p>You should see your web application running! You've successfully created and deployed your first Docker container.</p>
+<h2>Step 6: Managing Your Container</h2>
+<h3>Check Running Containers</h3>
+<p>To see your running container:</p>
+<pre>docker ps</pre>
+<h3>View Container Logs</h3>
+<p>To see what's happening inside your container:</p>
+<pre>docker logs my-running-app</pre>
+<h3>Stop Your Container</h3>
+<p>When you're done, stop the container:</p>
+<pre>docker stop my-running-app</pre>
+<h3>Remove Your Container</h3>
+<p>To completely remove the container:</p>
+<pre>docker rm my-running-app</pre>
+<h2>Step 7: Making Changes and Rebuilding</h2>
+<p>Let's try modifying our app and rebuilding it:</p>
+<h3>Edit Your HTML</h3>
+<p>Open `index.html` and change the title or add some content. For example, change the h1 tag to:</p>
+<pre>&lt;h1&gt;🚀 My Updated Docker App!&lt;/h1&gt;</pre>
+<h3>Rebuild the Image</h3>
+<pre>docker build -t my-first-app:v2 .</pre>
+<h3>Run the Updated Version</h3>
+<pre>docker run -d -p 8081:80 --name my-updated-app my-first-app:v2</pre>
+<p>Now you can visit `http://localhost:8081` to see your updated app!</p>
+<h2>Understanding What You've Built</h2>
+<h3>The Container Advantage</h3>
+<p>What you've created is more than just a web page. You've built a complete, self-contained application that:</p>
+<ul>
+<li>Includes the web server (Nginx)</li>
+<li>Contains your application code</li>
+<li>Runs the same way on any machine with Docker</li>
+<li>Is isolated from other applications</li>
+<li>Can be easily shared and deployed</li>
+</ul>
+<h3>Real-World Applications</h3>
+<p>This same process scales to complex applications:</p>
+<ul>
+<li>Node.js applications with databases</li>
+<li>Python web apps with machine learning models</li>
+<li>Multi-service applications</li>
+<li>Production deployments</li>
+</ul>
+<h2>Common Issues and Solutions</h2>
+<h3>Port Already in Use</h3>
+<p>If you get an error about port 8080 being in use, try a different port:</p>
+<pre>docker run -d -p 8082:80 --name my-app-alt my-first-app</pre>
+<h3>Container Name Already Exists</h3>
+<p>If the container name is already taken, either remove the old container or use a different name:</p>
+<pre>docker rm my-running-app
+# or
+docker run -d -p 8080:80 --name my-app-new my-first-app</pre>
+<h3>Image Build Errors</h3>
+<p>Make sure you're in the correct directory with both `Dockerfile` and `index.html` files:</p>
+<pre>ls -la</pre>
+<h2>Next Steps</h2>
+<h3>Experiment Further</h3>
+<ul>
+<li>Try adding CSS files and images to your web app</li>
+<li>Create a multi-page website</li>
+<li>Add JavaScript functionality</li>
+<li>Experiment with different base images</li>
+</ul>
+<h3>Learn More Docker Concepts</h3>
+<ul>
+<li>Docker volumes for persistent data</li>
+<li>Docker networks for connecting containers</li>
+<li>Docker Compose for multi-container applications</li>
+<li>Environment variables and configuration</li>
+</ul>
+<h3>Share Your Container</h3>
+<p>You can share your Docker image by:</p>
+<ul>
+<li>Pushing it to Docker Hub</li>
+<li>Saving it as a file with `docker save`</li>
+<li>Using it as a base for other applications</li>
+</ul>
+<h2>Best Practices You've Learned</h2>
+<ul>
+<li>Using official base images (nginx:alpine)</li>
+<li>Keeping containers focused on a single service</li>
+<li>Using meaningful names and tags</li>
+<li>Exposing only necessary ports</li>
+<li>Building images efficiently</li>
+</ul>
+<h2>Conclusion</h2>
+<p>Congratulations! You've successfully built and run your first Docker container. You've learned the fundamental Docker workflow:</p>
+<ol>
+<li>Create an application</li>
+<li>Write a Dockerfile</li>
+<li>Build an image</li>
+<li>Run a container</li>
+<li>Test and iterate</li>
+</ol>
+<p>This foundation will serve you well as you explore more complex Docker applications. The principles remain the same whether you're containerizing a simple static website or a complex microservices application.</p>
+<p>Docker containers provide consistency, portability, and isolation that make developing and deploying applications much more reliable. You're now ready to containerize your own projects and explore the vast ecosystem of Docker tools and services.</p>
+<p>Keep practicing, keep experimenting, and most importantly, have fun building with Docker!</p>
+</body>
+</html>
